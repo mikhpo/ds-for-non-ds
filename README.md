@@ -6,7 +6,7 @@
 * `docs` - документация
 
 ## Google Colab
-Ноутбук доступен в Google Colab по адресу https://colab.research.google.com/drive/1gcclbn1pFrj5qJmC752lHtJbWSXN08aQ
+Ноутбук доступен в Google Colab по адресу https://colab.research.google.com/github/mikhpo/ds-for-non-ds/blob/main/notebooks/credit_scoring.ipynb
 
 ## Описание задачи
 
