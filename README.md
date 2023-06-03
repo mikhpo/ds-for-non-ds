@@ -3,10 +3,11 @@
 
 ## Содержание репозитория
 * `notebooks` - ноутбуки Jupyter
+* `models` - сохраненные модели
 * `docs` - документация
 
 ## Google Colab
-Ноутбук доступен в Google Colab по адресу https://colab.research.google.com/drive/1gcclbn1pFrj5qJmC752lHtJbWSXN08aQ
+Ноутбук доступен в Google Colab по адресу https://colab.research.google.com/drive/1RJVk4It2gAIzuc7Zeru_P8AlamfJ_lt7
 
 ## Описание задачи
 
@@ -31,4 +32,4 @@
 - **NumberOfDependents**: Количество иждивенцев на попечении (супруги, дети и др).
 - **GroupAge**: закодированная возрастная группа - чем больше код, тем больше возраст.
 
-Таблица находится в схеме public под названием credit_scoring. 
+Таблица находится в схеме `public` под названием `credit_scoring`. 
