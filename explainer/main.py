@@ -64,6 +64,15 @@ def fit_model(
     return model
 
 
+def save_model(model: CatBoostClassifier, project_dir: str):
+    """
+    Сохранить модель для использования в продуктиве.
+    """
+    models_dir = os.path.join(project_dir, "models")
+    filename = os.path.join(models_dir, "catboost_model.json")
+    model.save_model(filename, format="json")
+
+
 def main():
     """
     Создать и запустить дашборд.
@@ -74,7 +83,8 @@ def main():
         x, y, test_size=0.2, random_state=42
     )
     model = fit_model(x_train, x_test, y_train, y_test, categorical_features)
-    explainer = ClassifierExplainer(model, x_train, y_train)
+    save_model(model, project_dir)
+    explainer = ClassifierExplainer(model, x_test, y_test)
     dashboard = ExplainerDashboard(explainer)
     dashboard.run()
 

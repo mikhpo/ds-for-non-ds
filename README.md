@@ -11,7 +11,7 @@
 ## Содержание репозитория
 
 * `.vscode` - настройки для Visual Studio Code
-
+* `api` - API-сервис на FastAPI
 * `data` - исходны данные по задаче
 * `explainer` - интерактивный дашборд ExplainerDashboard
 * `models` - сохраненные модели
@@ -90,8 +90,24 @@ pip install -r requirements.txt
 sh scripts/run_explainer.sh
 ```
 
-Или
+Или выполнить команду (после активации виртуального окружения):
 
 ```text
-python explainer/explainer.py
+python explainer/main.py
 ```
+
+## FastAPI
+
+Для запуска API-сервиса на FastAPI можно, нахродясь в корневой директории проекта, ввести команду (для macOS/Linux):
+
+```sh
+sh scripts/run_api.sh
+```
+
+Или выполнить команду (после активации виртуального окружения):
+
+```text
+uvicorn api.main:app/ --reload
+```
+
+Флаг `--reload` означает, что сервер будет отслеживать изменения в файлах .py и автоматически перезапускаться.
