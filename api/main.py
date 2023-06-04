@@ -1,17 +1,16 @@
-import logging
 import os
-from logging import handlers
-from pathlib import Path
 
-import pandas as pd
-from catboost import CatBoostClassifier, Pool
+from catboost import CatBoostClassifier
 from fastapi import Depends, FastAPI, Query
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 
+from .config import PROJECT_DIR, set_looger, load_model
+from .utils import make_prediction
+
 app = FastAPI()
-app_dir = Path(__file__).resolve().parent
-project_dir = Path(app_dir).resolve().parent
+logger = set_looger()
+classifier = load_model()
 
 
 class Features(BaseModel):
@@ -52,70 +51,16 @@ class Features(BaseModel):
     group_age: str = Field(Query(alias="GroupAge"))
 
 
-@app.on_event("startup")
-def load_model():
-    """
-    Загрузить модель машинного обучения,
-    заранее обученную в другом процессе.
-    """
-    global classifier
-    classifier = CatBoostClassifier()
-    models_dir = os.path.join(project_dir, "models")
-    model_path = os.path.join(models_dir, "catboost_model.json")
-    classifier.load_model(model_path, format="json")
-
-
-@app.on_event("startup")
-def set_looger():
-    """
-    Загрузить модель машинного обучения,
-    заранее обученную в другом процессе.
-    """
-    """
-    Установка настроек логирования.
-    """
-    global logger
-
-    # Определить путь сохранения логов.
-    app_name = Path(app_dir).resolve().stem
-    logs_dir = os.path.join(project_dir, "logs", app_name)
-    os.makedirs(logs_dir, exist_ok=True)
-    log_path = os.path.join(logs_dir, f"{app_name}.log")
-
-    # Общие настройки логирования.
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-
-    # Логировать в консоль.
-    console_handler = logging.StreamHandler()
-    logger.addHandler(console_handler)
-
-    # Логировать в файл.
-    formatter = logging.Formatter(
-        fmt="[{asctime}] [{levelname}] [{filename} -> {funcName} -> {lineno}] {message}",
-        datefmt="%d.%m.%Y %H:%M:%S",
-        style="{",
-    )
-    timed_rotating_handler = handlers.TimedRotatingFileHandler(
-        log_path, when="midnight", backupCount=7
-    )
-    timed_rotating_handler.setFormatter(formatter)
-    logger.addHandler(timed_rotating_handler)
-
-
 @app.get("/", include_in_schema=False)
-def read_root():
+def root():
     """
     Корневая директория сервиса.
     """
     return RedirectResponse("/docs")
 
 
-@app.get(
-    "/predict/{features}",
-    summary="Получить предсказание и вероятность"
-)
-def make_prediction(features: Features = Depends()):
+@app.get("/predict/", summary="Получить предсказание и вероятность")
+def predict(features: Features = Depends()):
     """
     Отправить факторные признаки и получить предсказание с вероятностью.
 
@@ -147,14 +92,11 @@ def make_prediction(features: Features = Depends()):
         "GroupAge": features.group_age,
     }
     logger.info(f"Получен запрос со следующими параметрами:\n{data}")
-    data = pd.DataFrame.from_dict([data])
-    pool = Pool(data, cat_features=["RealEstateLoansOrLines", "GroupAge"])
-    prediction = str(classifier.predict(pool)[0])
-    probability = str(classifier.predict_proba(pool)[0, 1])
+    prediction, probability = make_prediction(data, classifier)
     logger.info(
         f"Предсказанный класс: {prediction}, вероятность класса 1: {probability}"
     )
     return {
-        "message": "Получены предсказание класса и вероятность класса 1",
+        "msg": "Получены предсказание класса и вероятность класса 1",
         "result": {"prediction": prediction, "probability": probability},
     }
