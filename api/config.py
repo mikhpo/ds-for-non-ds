@@ -3,24 +3,8 @@ import os
 from logging import handlers
 from pathlib import Path
 
-from catboost import CatBoostClassifier
-
 APP_DIR = Path(__file__).resolve().parent
 PROJECT_DIR = Path(APP_DIR).resolve().parent
-
-from .config import PROJECT_DIR
-
-
-def load_model():
-    """
-    Загрузить модель машинного обучения,
-    заранее обученную в другом процессе.
-    """
-    classifier = CatBoostClassifier()
-    models_dir = os.path.join(PROJECT_DIR, "models")
-    model_path = os.path.join(models_dir, "catboost_model.json")
-    classifier.load_model(model_path, format="json")
-    return classifier
 
 
 def set_looger():
