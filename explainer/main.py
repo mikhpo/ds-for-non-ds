@@ -11,6 +11,9 @@ from catboost import CatBoostClassifier, Pool
 from explainerdashboard import ClassifierExplainer, ExplainerDashboard
 from sklearn.model_selection import train_test_split
 
+HOST = "0.0.0.0"
+PORT = 8001
+
 
 def construct_filepath():
     """
@@ -75,7 +78,7 @@ def save_model(model: CatBoostClassifier, project_dir: str):
 
 def main():
     """
-    Создать и запустить дашборд.
+    Получение данных, обучение модели, запуск дашборда.
     """
     project_dir = construct_filepath()
     x, y, categorical_features = load_data(project_dir)
@@ -86,7 +89,7 @@ def main():
     save_model(model, project_dir)
     explainer = ClassifierExplainer(model, x_test, y_test)
     dashboard = ExplainerDashboard(explainer)
-    dashboard.run()
+    dashboard.run(host=HOST, port=PORT)
 
 
 if __name__ == "__main__":

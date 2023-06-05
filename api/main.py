@@ -1,12 +1,10 @@
-import os
 
-from catboost import CatBoostClassifier
 from fastapi import Depends, FastAPI, Query
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
 
-from .config import PROJECT_DIR, set_looger, load_model
-from .utils import make_prediction
+from .config import set_looger
+from .utils import load_model, make_prediction
 
 app = FastAPI()
 logger = set_looger()
