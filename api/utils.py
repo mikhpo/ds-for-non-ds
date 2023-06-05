@@ -17,6 +17,7 @@ def make_prediction(data: dict, classifier: CatBoostClassifier):
     probability = str(classifier.predict_proba(pool)[0, 1])
     return prediction, probability
 
+
 def load_model():
     """
     Загрузить модель машинного обучения,
