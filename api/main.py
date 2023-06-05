@@ -1,4 +1,3 @@
-
 from fastapi import Depends, FastAPI, Query
 from fastapi.responses import RedirectResponse
 from pydantic import BaseModel, Field
@@ -68,12 +67,12 @@ def predict(features: Features = Depends()):
     - NumberOfTime30-59DaysPastDueNotWorse: Сколько раз за последние 2 года наблюдалась просрочка 30-59 дней.
     - DebtRatio: Ежемесячные расходы (платеж по долгам, алиментам, расходы на проживания) деленные на месячный доход.
     - MonthlyIncome: Ежемесячный доход.
-    - NumberOfOpenCreditLinesAndLoans: Количество открытых кредитов (напрмер, автокредит или ипотека) и кредитных карт.
+    - NumberOfOpenCreditLinesAndLoans: Количество открытых кредитов (например, автокредит или ипотека) и кредитных карт.
     - NumberOfTimes90DaysLate: Сколько раз наблюдалась просрочка (90 и более дней).
-    - NumberRealEstateLoansOrLines: Количество кредиов (в том числе под залог жилья)
+    - NumberRealEstateLoansOrLines: Количество кредитов (в том числе под залог жилья)
     - NumberOfTime60-89DaysPastDueNotWorse: Сколько раз за последние 2 года заемщик задержал платеж на 60-89 дней.
     - NumberOfDependents: Количество иждивенцев на попечении (супруги, дети и др).
-    - RealEstateLoansOrLines: Закодированное количество кредиов (в том числе под залог жилья) - чем больше код буквы, тем больше кредитов
+    - RealEstateLoansOrLines: Закодированное количество кредитов (в том числе под залог жилья) - чем больше код буквы, тем больше кредитов
     - GroupAge: закодированная возрастная группа - чем больше код, тем больше возраст.
     """
     data = {
