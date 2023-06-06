@@ -16,6 +16,7 @@
 * `explainer` - интерактивный дашборд ExplainerDashboard
 * `models` - сохраненные модели
 * `notebooks` - ноутбуки Jupyter
+* `scripts` - вспомогательные скрипты Bash
 
 ## Google Colab
 
