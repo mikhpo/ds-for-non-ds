@@ -5,5 +5,4 @@ WORKDIR /project
 COPY . .
 RUN sh ./scripts/install_requirements.sh  
 EXPOSE 8001 8002
-RUN 
 CMD ["sh", "scripts/run_services.sh"]
